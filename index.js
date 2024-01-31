@@ -1,15 +1,27 @@
 import express from 'express';
 import dotenv from 'dotenv';
-
-dotenv.config();
+import cors from 'cors'
+import connectDB from './config/connect.js'
+import userRoutes from './routes/userRoutes.js'
+import bodyParser from 'body-parser';
 
 const app = express();
+
+dotenv.config();
+const PORT = process.env.PORT;
+const DATABASE_URL = process.env.DATABASE_URL
+
+connectDB(DATABASE_URL);
+app.use(cors());
+app.use(express.urlencoded({extended : false}));
+app.use(express.json());
+app.use('/user',userRoutes);
+
 
  app.get('/', (req, res)=>{
     res.send("<h1>Shree Ganesh </h1>");
  })
 
- const PORT = process.env.PORT;
  app.listen(PORT, ()=>{
-    console.log("server started")
+    console.log("server started....")
  })
